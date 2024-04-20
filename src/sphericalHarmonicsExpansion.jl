@@ -1,5 +1,7 @@
 import Base.setindex!, Base.getindex, Base.isapprox, Base.==, Base.!=,
         Base.+, Base.-, Base.*, Base./, Base.write
+using LinearAlgebra
+using TypedPolynomials
 
 mutable struct SphericalHarmonicCoefficients
   c::Vector{T} where T<:Real
@@ -197,6 +199,30 @@ function sphericalHarmonicsExpansion(Clm::SphericalHarmonicCoefficients, x::Vari
           else
               # spherical expansion
               sum += Clm[l,m] * rlylm(l,m,x,y,z)
+          end
+      end
+    end
+  end
+  return sum
+end
+
+function sphericalHarmonicsExpansion(Clm::Tuple{Variable{Symbol}}, x::Variable, y::Variable, z::Variable)
+  L = sqrt(length(Clm)) - 1
+  if !isinteger(L)
+    throw(DomainError(L,"Input vector needs to be of size (L+1)², where L ∈ ℕ₀."))
+  end
+
+  sum = 0
+
+  for l in 0:L
+    for m in -l:l
+      if Clm[l, m] != 0
+          if false#Clm.solid
+              # solid expansion
+              sum += Clm[l * L + (m + l)] * zlm(l,m,x,y,z)
+          else
+              # spherical expansion
+              sum += Clm[l * L + (m + l)] * rlylm(l,m,x,y,z)
           end
       end
     end
