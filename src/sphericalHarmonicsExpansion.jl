@@ -206,23 +206,25 @@ function sphericalHarmonicsExpansion(Clm::SphericalHarmonicCoefficients, x::Vari
   return sum
 end
 
-function sphericalHarmonicsExpansion(Clm::Tuple{Variable{Symbol}}, x::Variable, y::Variable, z::Variable)
+function sphericalHarmonicsExpansion(Clm::Tuple{Vararg{Variable}}, x::Variable, y::Variable, z::Variable)
   L = sqrt(length(Clm)) - 1
   if !isinteger(L)
     throw(DomainError(L,"Input vector needs to be of size (L+1)², where L ∈ ℕ₀."))
+  else
+    L = convert(Int,L)
   end
 
   sum = 0
 
   for l in 0:L
     for m in -l:l
-      if Clm[l, m] != 0
+      if Clm[l * L + (m + l) + 1] != 0
           if false#Clm.solid
               # solid expansion
-              sum += Clm[l * L + (m + l)] * zlm(l,m,x,y,z)
+              sum += Clm[l * L + (m + l) + 1] * zlm(l,m,x,y,z)
           else
               # spherical expansion
-              sum += Clm[l * L + (m + l)] * rlylm(l,m,x,y,z)
+              sum += Clm[l * L + (m + l) + 1] * rlylm(l,m,x,y,z)
           end
       end
     end

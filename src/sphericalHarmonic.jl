@@ -53,6 +53,11 @@ function ylm(l, m, x, y, z)
 	end
 end
 
+using Combinatorics
+
+function multinomial(args...)
+    return factorial(sum(args)) / prod(factorial.(args))
+end
 # expand (x²+y²+z²)^n
 function trinomialExpansion(n , x, y, z)
 	multiindices = [(i,j,n-i-j) for i in 0:n for j in 0:n-i]
