@@ -22,7 +22,7 @@ function assertEquivalent()
 
     TypedPolynomials.@polyvar c[1:4]
     f_new = sphericalHarmonicsExpansion(c, x, y, z)
-    print(f_new)
+    println(f_new)
 end
 
 function benchmarkTyped(runs=1000)
