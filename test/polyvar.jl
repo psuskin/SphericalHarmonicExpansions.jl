@@ -21,7 +21,7 @@ function assertEquivalent()
     println(f_old)
 
     TypedPolynomials.@polyvar c[1:4]
-    f_new = sphericalHarmonicsExpansion(c, x, y, z)
+    f_new = sphericalHarmonicsExpansion(c, x, y, z)(c => [42.0, 1.0, 2.0, 3.0])
     println(f_new)
 end
 
