@@ -218,13 +218,13 @@ function sphericalHarmonicsExpansion(Clm::Tuple{Vararg{Variable}}, x::Variable, 
 
   for l in 0:L
     for m in -l:l
-      if Clm[l * L + (m + l) + 1] != 0
+      if Clm[l * (l+1) + m + 1] != 0
           if false#Clm.solid
               # solid expansion
-              sum += Clm[l * L + (m + l) + 1] * zlm(l,m,x,y,z)
+              sum += Clm[l * (l+1) + m + 1] * zlm(l,m,x,y,z)
           else
               # spherical expansion
-              sum += Clm[l * L + (m + l) + 1] * rlylm(l,m,x,y,z)
+              sum += Clm[l * (l+1) + m + 1] * rlylm(l,m,x,y,z)
           end
       end
     end
