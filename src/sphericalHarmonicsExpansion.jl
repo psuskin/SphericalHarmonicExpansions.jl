@@ -1,10 +1,10 @@
 import Base.setindex!, Base.getindex, Base.isapprox, Base.==, Base.!=,
         Base.+, Base.-, Base.*, Base./, Base.write
 
-mutable struct SphericalHarmonicCoefficients{T<:Real}
-  c::AbstractVector{T}
-  L::Integer
-  R::Real
+mutable struct SphericalHarmonicCoefficients{T<:Real, vecT<:AbstractVector{T}}
+  c::vecT
+  L::Int64
+  R::Float64
   solid::Bool
 
   function SphericalHarmonicCoefficients(c::AbstractVector{T}, L::Real, R::Real,solid::Bool) where T<:Real
@@ -14,7 +14,7 @@ mutable struct SphericalHarmonicCoefficients{T<:Real}
     if (!isinteger(sqrt(length(c))) || length(c)==0)
       throw(DomainError(sqrt(length(c)),"Input vector needs to be of size (L+1)², where L ∈ ℕ₀."))
     end 
-    return new{T}(c,L,R,solid)
+    return new{T, typeof(c)}(c,L,R,solid)
   end
 
   SphericalHarmonicCoefficients(c::AbstractVector{<:Real}) = SphericalHarmonicCoefficients(c, sqrt(length(c))-1, 1.0, false)
